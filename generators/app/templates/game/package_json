@@ -1,0 +1,55 @@
+{
+    "name": "<%= title %>",
+    "version": "0.0.0-development",
+    "description": "",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "scripts": {
+      "build": "tsc",
+      "check-coverage": "nyc check-coverage --statements 60 --branche 60 --functions 60 --lines 60",
+      "report-coverage": "cat ./coverage/lcov.info | codecov",
+      "commit": "git-cz",
+      "test": "_mocha -r ts-node/register src/**/*.test.ts --require esm",
+      "cover": "nyc --reporter=lcov npm t",
+      "semantic-release": "semantic-release"
+    },
+    "files": [
+      "lib/**/*"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "@types/chai": "^4.2.11",
+      "@types/mocha": "^7.0.2",
+      "@types/node": "^14.0.14",
+      "chai": "^4.2.0",
+      "mocha": "^8.0.1",
+      "ts-node": "^8.10.2"
+    },
+    "devDependencies": {
+      "codecov.io": "^0.1.6",
+      "commitizen": "^4.1.2",
+      "cz-conventional-changelog": "^3.2.0",
+      "esm": "^3.2.25",
+      "ghooks": "^2.0.4",
+      "nyc": "^15.1.0",
+      "semantic-release": "^17.1.1",
+      "typescript": "^3.7.3"
+    },
+    "repository": {
+      "type": "git",
+      "url": ""
+    },
+    "publishConfig": {
+      "access": "public"
+    },
+    "czConfig": {
+      "path": "node_modules/cz-conventional-changelog"
+    },
+    "config": {
+      "ghooks": {
+        "pre-commit": "npm run cover && npm run check-coverage"
+      }
+    }
+  }
+  
