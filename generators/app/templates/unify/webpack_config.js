@@ -1,6 +1,9 @@
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+
+
+
 const entry = {
     <%for(entry in entries) { %>"<%= entries[entry] %>": "./src/<%= entries[entry] %>.ts",
     <% } %>};
@@ -8,6 +11,9 @@ const output = {
     filename: '[name].output.js',
     path: path.resolve(__dirname, "precompute"),
 };
+
+
+
 
 
 module.exports = {
