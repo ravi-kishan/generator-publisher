@@ -16,10 +16,20 @@ module.exports = class extends Generator {
     
     const prompts = [
       {
-        type: 'confirm',
-        name: 'someAnswer',
-        message: 'Would you like to make a game?',
-        default: true
+        type: 'list',
+        name: 'projectType',
+        message: 'What would you like to make ?',
+        default: 'game',
+        choices: [
+          {
+            name: 'game (A typescript project)',
+            value: 'game',
+          }, {
+            name: 'unify layer (A bundling tool)',
+            value: 'unify'
+
+          }
+        ]
       },
       {
         type: 'input',
@@ -30,8 +40,9 @@ module.exports = class extends Generator {
     ];
 
      this.props = await this.prompt(prompts);
-      // To access props later use this.props.someAnswer
-      if(!this.props.someAnswer) {
+      // To access props later use this.props.projectType
+      console.log(this.props.projectType);
+      if(this.props.projectType == 'unify') {
       while(this.addGame){
         const unifyPrompts = [
           {
@@ -48,7 +59,7 @@ module.exports = class extends Generator {
           }
         ];
        var unifyProps = await this.prompt(unifyPrompts);
-          // To access props later use this.props.someAnswer;
+          // To access props later use this.props.projectType;
           this.games.push(unifyProps.game);
           this.addGame = unifyProps.again;
       
@@ -64,7 +75,7 @@ module.exports = class extends Generator {
   
 
   writing() {
-    if(this.props.someAnswer) {
+    if(this.props.projectType == 'game') {
       this.fs.copyTpl(
         this.templatePath('game/package_json'),
         this.destinationPath('package.json'),
@@ -84,6 +95,11 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath('game/tsconfig_json'),
         this.destinationPath('tsconfig.json')  
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('game/tsconfig_build_json'),
+        this.destinationPath('tsconfig.build.json')  
       );
     } else {
       this.fs.copyTpl(
@@ -114,6 +130,7 @@ module.exports = class extends Generator {
         this.templatePath('unify/tsconfig_json'),
         this.destinationPath('tsconfig.json')  
       );
+      
 
       this.fs.copyTpl(
         this.templatePath('unify/webpack_config.js'),
@@ -151,6 +168,8 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.installDependencies();
+    this.installDependencies({
+      bower: false
+    });
   }
 };
